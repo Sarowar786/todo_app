@@ -74,7 +74,10 @@ export default function InputForm() {
       </form>
 
       {/* todo list */}
-      <TodoList onEdit={handleEdit} />
+
+      <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+        <TodoList onEdit={handleEdit} />
+      </div>
     </div>
   );
 }
