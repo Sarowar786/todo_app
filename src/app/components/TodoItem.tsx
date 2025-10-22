@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { deleteTodo, editTodo } from "@/redux/todoSlice";
+import { deleteTodo } from "@/redux/todoSlice";
 import toast from "react-hot-toast";
 
 interface Item {
@@ -11,26 +11,12 @@ interface Item {
     todo: string;
     _id: string;
   };
+  onEdit: (id: string, text: string) => void;
 }
 
-export default function TodoItem({ item }: Item) {
+export default function TodoItem({ item, onEdit }: Item) {
   const dispatch = useDispatch();
 
-  // 📝 Edit handler
-  const handleEdit = () => {
-    const updatedTodo = prompt("Edit your todo:", item.todo);
-    if (updatedTodo && updatedTodo.trim() !== "") {
-      dispatch(
-        editTodo({
-          ...item,
-          todo: updatedTodo.trim(),
-        })
-      );
-      toast.success("Todo updated successfully!");
-    }
-  };
-
-  // 🗑️ Delete handler
   const handleDelete = () => {
     dispatch(deleteTodo(item._id));
     toast.success("Todo deleted successfully!");
@@ -43,19 +29,16 @@ export default function TodoItem({ item }: Item) {
       transition={{ y: { type: "spring", stiffness: 120 } }}
       className="border-l-green-500 border-green-900 w-full font-medium border-[1px] border-l-[6px] px-2 py-1 cursor-pointer flex items-center justify-between"
     >
-      {item?.todo}
+      {item.todo}
 
       <div className="flex items-center gap-3">
-        {/* ✏️ Edit Button */}
         <MdEdit
-          onClick={handleEdit}
-          className="text-xl hover:text-blue-500 duration-200"
+          onClick={() => onEdit(item._id, item.todo)}
+          className="text-xl hover:text-blue-500 duration-200 cursor-pointer"
         />
-
-        {/* 🗑️ Delete Button */}
         <MdDelete
           onClick={handleDelete}
-          className="text-xl hover:text-red-500 duration-200"
+          className="text-xl hover:text-red-500 duration-200 cursor-pointer"
         />
       </div>
     </motion.li>

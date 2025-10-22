@@ -7,7 +7,12 @@ import { motion } from "framer-motion";
 import { removeTodo } from "@/redux/todoSlice";
 import toast from "react-hot-toast";
 
-export default function TodoList() {
+
+interface TodoListProps {
+  onEdit: (id: string, text: string) => void;
+}
+
+export default function TodoList({ onEdit }: TodoListProps) {
   const { todoList } = useSelector((state: State) => state?.todo);
   const dispatch = useDispatch();
 
@@ -19,7 +24,7 @@ export default function TodoList() {
         <div>
           <ul className="mah-h-[300px] border border-slate-600 p-2 shadow-lg  flex flex-col gap-3 rounded-md ">
             {todoList?.map((item) => (
-              <TodoItem key={item._id} item={item} />
+              <TodoItem key={item._id} item={item} onEdit={onEdit} />
             ))}
           </ul>
           <motion.button
